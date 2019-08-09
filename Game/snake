@@ -1,0 +1,23 @@
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+
+
+void display(){
+	glutSwapBuffers(); 
+
+}
+
+int main(int argc,char** argv){
+	glutInit(&argc, argv);
+    	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE);    
+    	glutInitWindowSize(500,500);        
+    	glutInitWindowPosition(1,1);    
+    	glutCreateWindow("Snake Game"); 
+    	glutDisplayFunc(display);            
+    
+    	glutMainLoop(); 
+    	return 0;
+}
+
+
