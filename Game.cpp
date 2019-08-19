@@ -1,53 +1,60 @@
+//Headers files.
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <ctime>
 #include <windows.h>
 #include <stdlib.h>
-#include <iostream>
 #include <string.h>
 
+//Define files.
 #define COLUMNS 40
 #define ROWS 40
 #define FPS 10
-#define MAX 60
+#define MAX 50
 
 #define UP  1
 #define DOWN -1
 #define RIGHT 2
 #define LEFT -2
 
+//Define snake length variable.
 int snake_length=5;
-int posX[60]={20,20,20,20,20},posY[60]={20,19,18,17,16};
+//Define first position of the snake 
+int posX[50]={20,20,20,20,20},posY[50]={20,19,18,17,16};
+//Define variables.
 bool food=true;
 int foodX,foodY;
 int gridX,gridY;
 int score=0;
 int highscore = 0;
-char buffer[10];
 bool gameOver=false;
-short sDirection=RIGHT;
+short sDirection= RIGHT;
 
+//Initialize Grid in the display.
 void initGrid(int x,int y){
 	gridX=x;
 	gridY=y;
 
 }
 
+//Timer function to run the snake per second.
 void timer(int){
 	glutPostRedisplay();
 	glutTimerFunc(1000/FPS,timer,0);
 }
 
+//Making outer grid and inner grid.
 void unit(int x,int y){
 	if(x==0||y==0||x==gridX-1||y==gridY-1){
 		glLineWidth(3.0);
-		glColor3f(0.0,0.0,0.0);	
+		glColor3f(0.0,0.0,1.0);	
 	}else{
 		glLineWidth(1.0);
 		glColor3f(0.0,0.0,0.0);
 	}
 	
+	//Use line loop for making one square.
 	glBegin(GL_LINE_LOOP);
 		glVertex2f(x,y);
 		glVertex2f(x+1,y);
@@ -56,6 +63,7 @@ void unit(int x,int y){
 	glEnd();
 }
 
+//Keyboard function.
 void keyboard(int key,int,int){
 	switch(key){
 		case GLUT_KEY_UP:
@@ -81,6 +89,7 @@ void keyboard(int key,int,int){
 	}		
 
 }
+//Draw grid.
 void drawGrid(){
 	for(int x=0;x<gridX;x++){
 		for(int y=0;y<gridY;y++){
@@ -89,6 +98,7 @@ void drawGrid(){
 	}
 }
 
+//Draw snake.
 void drawSnake(){
 	for(int i=snake_length-1;i>0;i--){
 		posX[i]=posX[i-1];
@@ -119,7 +129,8 @@ void drawSnake(){
 	for (int i= snake_length-1;i>0;i--)
     {
         if (posX[0]==posX[i]&&posY[0]==posY[i]){ 
-            gameOver=true; break;}
+            gameOver=true;
+			 break;}
     }
     if (posX[0]==foodX && posY[0]== foodY)
     {
@@ -133,7 +144,7 @@ void drawSnake(){
 }
 
 
-
+//Call back random function.
 void random(int &x,int &y){
 	int _maxX=gridX-2;
 	int _maxY=gridY-2;
@@ -142,6 +153,8 @@ void random(int &x,int &y){
 	x=_min+rand() % (_maxX-_min);
 	y=_min+rand() % (_maxY-_min);
 }
+
+//Reset the snake into these position after press reset function.
 void reset()
 {
     snake_length= 5;
@@ -151,6 +164,7 @@ void reset()
     gameOver=false;
 }
 
+//Draw food.
 void drawFood(){
 	if(food){
 		random(foodX,foodY);
@@ -160,18 +174,22 @@ void drawFood(){
 	glRectd(foodX,foodY,foodX+1,foodY+1);		
 }
 
+//Call back of display function.
 void display(){
 	glClear(GL_COLOR_BUFFER_BIT);
 	drawGrid();
 	drawSnake();
 	drawFood();
 	
+	//Equalized socre to highscore when getting highscore value.
 	if(score>highscore)
     {
          highscore = score;
     }
+    //Swap buffers.
     glutSwapBuffers();
 
+	//Pop up  scores and high scores in a message box.
     if (gameOver==true)
     {
         char _score[10];
@@ -195,6 +213,7 @@ void display(){
     }
 }
 
+//Call back the menu function.
 void menu(int value)
 {
 
@@ -207,13 +226,15 @@ void menu(int value)
     }
     glutPostRedisplay();
 }
-	
+
+//Initialize color and grid.	
 void init(){
 	glClearColor(1.0,1.0,1.0,1.0);
 	initGrid(COLUMNS,ROWS);
 
 }
 
+//Callback the reshape function.
 void reshape(int w,int h){
 	glViewport(0,0,(GLsizei)w,(GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -221,9 +242,10 @@ void reshape(int w,int h){
 	glOrtho(0.0,COLUMNS,0.0,ROWS,-1.0,1.0);
 	glMatrixMode(GL_MODELVIEW);
 }
- 
+
+//Main function. 
 int main(int argc,char** argv){
-	glutInit(&argc, argv);
+		glutInit(&argc, argv);
     	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE);    
     	glutInitWindowSize(500,500);        
     	glutInitWindowPosition(1,1);    
