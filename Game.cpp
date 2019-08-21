@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-//Define files.
+//Define variables.
 #define COLUMNS 40
 #define ROWS 40
 #define FPS 10
@@ -48,7 +48,7 @@ void timer(int){
 void unit(int x,int y){
 	if(x==0||y==0||x==gridX-1||y==gridY-1){
 		glLineWidth(3.0);
-		glColor3f(0.0,0.0,1.0);	
+		glColor3f(1.0,0.0,0.0);	
 	}else{
 		glLineWidth(1.0);
 		glColor3f(0.0,0.0,0.0);
